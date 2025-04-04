@@ -12,9 +12,23 @@ public class DeviceOperator : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            CheckHit(ray);
+        }
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            Ray ray = playerCamera.ScreenPointToRay(Input.GetTouch(0).position);
+            CheckHit(ray);
+        }
+    }
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+    void CheckHit(Ray ray)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            Renderer rend = hit.collider.GetComponent<Renderer>();
+            if (rend != null)
             {
                 hit.collider.GetComponent<Renderer>().material.color = Random.ColorHSV();
             }
